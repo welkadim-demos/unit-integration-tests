@@ -1,28 +1,56 @@
 # Integration Tests for UnitTestSamples
 
-This project demonstrates comprehensive integration testing for the `DepartmentsService` using **LocalDB** and **Entity Framework Core** with **SQL Server**, following Microsoft's recommended testing patterns.
+This project demonstrates comprehensive integration testing for the `DepartmentsService` using both **LocalDB** and **Test Containers** with **Entity Framework Core** and **SQL Server**, following Microsoft's recommended testing patterns.
 
 ## Overview
 
 The integration tests verify the complete interaction between:
 - **DepartmentsService** (business logic)
 - **Entity Framework Core** (ORM)
-- **SQL Server LocalDB** (database)
+- **SQL Server** (database - both LocalDB and containerized)
+
+## Testing Approaches
+
+This project provides **two different integration testing approaches**:
+
+### 🏠 **LocalDB Approach** (Main Directory)
+- Uses SQL Server LocalDB for Windows development
+- Faster startup and execution
+- Perfect for local development and Windows CI/CD
+- Located in root integration test files
+
+### 🐳 **Test Containers Approach** (TestContainers Directory)
+- Uses Docker containers with SQL Server
+- Cross-platform support (Windows, macOS, Linux)
+- Production parity testing
+- Perfect for diverse development environments and cloud CI/CD
+- Located in `TestContainers/` subdirectory
+
+Choose the approach that best fits your development environment and CI/CD requirements.
 
 ## Project Structure
 
 ```
 XunitTestProject.IntegrationTests/
 ├── Base/
-│   └── IntegrationTestBase.cs          # Base class for integration tests
+│   └── IntegrationTestBase.cs              # Base class for LocalDB integration tests
 ├── Collections/
-│   └── DatabaseCollection.cs          # xUnit collection definition
+│   └── DatabaseCollection.cs              # xUnit collection for LocalDB tests
 ├── Fixtures/
-│   └── DatabaseFixture.cs             # Database fixture with LocalDB setup
+│   └── DatabaseFixture.cs                 # LocalDB database fixture
 ├── Helpers/
-│   └── TestConfigurationHelper.cs     # Configuration utilities
-├── DepartmentsServiceIntegrationTests.cs  # Main integration tests
-└── DatabaseConnectionTests.cs         # Database connection verification tests
+│   └── TestConfigurationHelper.cs         # Configuration utilities
+├── TestContainers/                        # 🐳 Docker Container Testing Approach
+│   ├── Base/
+│   │   └── TestContainerIntegrationTestBase.cs  # Base class for container tests
+│   ├── Collections/
+│   │   └── TestContainerDatabaseCollection.cs   # xUnit collection for container tests
+│   ├── Fixtures/
+│   │   └── TestContainerDatabaseFixture.cs      # SQL Server container fixture
+│   ├── TestContainerDepartmentsServiceIntegrationTests.cs # Container-based tests
+│   └── README.md                           # Container testing documentation
+├── DepartmentsServiceIntegrationTests.cs  # Main LocalDB integration tests
+└── DatabaseConnectionTests.cs             # LocalDB connection verification tests
 ```
 
 ## Key Features
