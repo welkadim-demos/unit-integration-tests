@@ -236,12 +236,12 @@ namespace WebApplicationAPI.Controllers
                     }
                 }
 
-                // Update the department
-                var updatedDepartment = updateDto.ToEntity(id);
-                _departmentsService.UpdateDepartment(updatedDepartment);
+                // Update the existing tracked entity instead of creating a new one
+                existingDepartment.Name = updateDto.Name;
+                existingDepartment.Description = updateDto.Description ?? string.Empty;
+                _departmentsService.UpdateDepartment(existingDepartment);
                 
-                var result = _departmentsService.GetDepartmentById(id);
-                return Ok(result!.ToDto());
+                return Ok(existingDepartment.ToDto());
             }
             catch (ArgumentException ex)
             {
