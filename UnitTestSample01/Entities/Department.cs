@@ -11,10 +11,11 @@ namespace UnitTestSample01.Entities
     {
         public int Id { get; set; }
 
-        [MaxLength(100)]
-        public string Name { get; set; }
+        [Required(ErrorMessage = "Department name is required.")]
+        [StringLength(100, MinimumLength = 1, ErrorMessage = "Department name must be between 1 and 100 characters.")]
+        public required string Name { get; set; }
 
-        [MaxLength(500)]
-        public string Description { get; set; }
+        [StringLength(500, ErrorMessage = "Department description cannot exceed 500 characters.")]
+        public string? Description { get; set; }
     }
 }
