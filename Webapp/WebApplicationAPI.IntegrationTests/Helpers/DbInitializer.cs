@@ -37,7 +37,7 @@ namespace WebApplicationAPI.IntegrationTests
             // Reset identity seed if using SQL Server
             if (_context.Database.IsSqlServer())
             {
-                await _context.Database.ExecuteSqlRawAsync("DBCC CHECKIDENT('Departments', RESEED, 0)");
+                await _context.Database.ExecuteSqlRawAsync("DBCC CHECKIDENT('Departments', RESEED, 1)");
             }
         }
 
