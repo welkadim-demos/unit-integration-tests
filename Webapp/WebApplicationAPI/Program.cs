@@ -1,4 +1,9 @@
 
+using Microsoft.EntityFrameworkCore;
+using WebApplicationAPI.Model;
+using WebApplicationAPI.Repositories;
+using WebApplicationAPI.Services;
+
 namespace WebApplicationAPI
 {
     public class Program
@@ -8,6 +13,15 @@ namespace WebApplicationAPI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            // Add dbcontext
+            builder.Services.AddDbContext<AppDbContext>(options => {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("AppConnectionString"));            
+            });
+
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+
+            builder.Services.AddTransient<DepartmentsServiceV2>();
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
