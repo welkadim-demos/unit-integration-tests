@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XunitTestProject", "XunitTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XunitTestProject.IntegrationTests", "XunitTestProject.IntegrationTests\XunitTestProject.IntegrationTests.csproj", "{578FCCC2-E86B-4BEC-B475-AE593FD4E28A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApp", "WebApp", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplicationAPI", "Webapp\WebApplicationAPI\WebApplicationAPI.csproj", "{A87017CA-2503-4841-8597-503D67A3AC28}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,9 +31,16 @@ Global
 		{578FCCC2-E86B-4BEC-B475-AE593FD4E28A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{578FCCC2-E86B-4BEC-B475-AE593FD4E28A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{578FCCC2-E86B-4BEC-B475-AE593FD4E28A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A87017CA-2503-4841-8597-503D67A3AC28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A87017CA-2503-4841-8597-503D67A3AC28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A87017CA-2503-4841-8597-503D67A3AC28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A87017CA-2503-4841-8597-503D67A3AC28}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A87017CA-2503-4841-8597-503D67A3AC28} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {088A8B0A-FA03-4F6F-94F5-4447C9E6BE67}
