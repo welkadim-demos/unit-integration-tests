@@ -9,13 +9,13 @@ namespace WebApplicationAPI.Services
     /// Business logic is separated from data access logic
     /// Improved testability through dependency injection of repository interface
     /// </summary>
-    public class DepartmentsServiceV2
+    public class DepartmentsService
     {
         private readonly IDepartmentRepository _departmentRepository;
-        private readonly ILogger<DepartmentsServiceV2> _logger;
+        private readonly ILogger<DepartmentsService> _logger;
 
-        public DepartmentsServiceV2(IDepartmentRepository departmentRepository, 
-                                   ILogger<DepartmentsServiceV2> logger)
+        public DepartmentsService(IDepartmentRepository departmentRepository, 
+                                   ILogger<DepartmentsService> logger)
         {
             _departmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -159,6 +159,147 @@ namespace WebApplicationAPI.Services
             
             _logger.LogDebug("Searching departments by keyword: {Keyword}", keyword);
             return _departmentRepository.SearchByName(keyword);
+        }
+
+        /// <summary>
+        /// Updates an existing department
+        /// </summary>
+        /// <param name="department">The department to update</param>
+        /// <exception cref="ArgumentNullException">Thrown when department is null</exception>
+        /// <exception cref="ArgumentException">Thrown when department data is invalid</exception>
+        /// <exception cref="InvalidOperationException">Thrown when business rules are violated</exception>
+        public void UpdateDepartment(Department department)
+        {
+            ArgumentNullException.ThrowIfNull(department, nameof(department));
+            
+            _logger.LogInformation("Starting UpdateDepartment operation for ID {DepartmentId}", department.Id);
+
+            // Input validation
+            ValidateInputForUpdate(department);
+
+            // Business rules validation
+            ValidateBusinessRulesForUpdate(department);
+
+            try
+            {
+                _departmentRepository.Update(department);
+                var affectedRows = _departmentRepository.SaveChanges();
+
+                if (affectedRows == 0)
+                {
+                    _logger.LogWarning("No rows were affected when updating department {DepartmentId}", department.Id);
+                    throw new InvalidOperationException("Failed to update department in database.");
+                }
+
+                _logger.LogInformation("Successfully updated department {DepartmentId}", department.Id);
+            }
+            catch (Exception ex) when (!(ex is ArgumentException || ex is InvalidOperationException))
+            {
+                _logger.LogError(ex, "Unexpected error occurred while updating department {DepartmentId}", department.Id);
+                throw new InvalidOperationException("An unexpected error occurred while updating the department.", ex);
+            }
+        }
+
+        /// <summary>
+        /// Deletes a department by ID
+        /// </summary>
+        /// <param name="id">The ID of the department to delete</param>
+        /// <exception cref="ArgumentException">Thrown when ID is invalid</exception>
+        /// <exception cref="InvalidOperationException">Thrown when department cannot be deleted</exception>
+        public void DeleteDepartment(int id)
+        {
+            _logger.LogInformation("Starting DeleteDepartment operation for ID {DepartmentId}", id);
+
+            if (id <= 0)
+            {
+                throw new ArgumentException("Department ID must be greater than zero.", nameof(id));
+            }
+
+            try
+            {
+                var department = _departmentRepository.GetById(id);
+                if (department == null)
+                {
+                    throw new InvalidOperationException($"Department with ID {id} does not exist.");
+                }
+
+                _departmentRepository.Delete(id);
+                var affectedRows = _departmentRepository.SaveChanges();
+
+                if (affectedRows == 0)
+                {
+                    _logger.LogWarning("No rows were affected when deleting department {DepartmentId}", id);
+                    throw new InvalidOperationException("Failed to delete department from database.");
+                }
+
+                _logger.LogInformation("Successfully deleted department {DepartmentId}", id);
+            }
+            catch (Exception ex) when (!(ex is ArgumentException || ex is InvalidOperationException))
+            {
+                _logger.LogError(ex, "Unexpected error occurred while deleting department {DepartmentId}", id);
+                throw new InvalidOperationException("An unexpected error occurred while deleting the department.", ex);
+            }
+        }
+
+        /// <summary>
+        /// Validates input parameters for UpdateDepartment operation
+        /// </summary>
+        /// <param name="department">The department to validate</param>
+        private void ValidateInputForUpdate(Department department)
+        {
+            // Null check
+            ArgumentNullException.ThrowIfNull(department, nameof(department));
+
+            // ID validation
+            if (department.Id <= 0)
+            {
+                throw new ArgumentException("Department ID must be greater than zero.", nameof(department));
+            }
+
+            // Use same validation as Add for name and description
+            if (string.IsNullOrWhiteSpace(department.Name))
+            {
+                _logger.LogWarning("UpdateDepartment called with null or empty department name");
+                throw new ArgumentException("Department name cannot be null or empty.", nameof(department));
+            }
+
+            if (department.Name.Length > 100)
+            {
+                _logger.LogWarning("UpdateDepartment called with department name longer than 100 characters: {Length}", 
+                                 department.Name.Length);
+                throw new ArgumentException("Department name cannot exceed 100 characters.", nameof(department));
+            }
+
+            if (!string.IsNullOrWhiteSpace(department.Description) && department.Description.Length > 500)
+            {
+                _logger.LogWarning("UpdateDepartment called with department description longer than 500 characters: {Length}", 
+                                 department.Description.Length);
+                throw new ArgumentException("Department description cannot exceed 500 characters.", nameof(department));
+            }
+        }
+
+        /// <summary>
+        /// Validates business rules for UpdateDepartment operation
+        /// </summary>
+        /// <param name="department">The department to validate</param>
+        private void ValidateBusinessRulesForUpdate(Department department)
+        {
+            // Check if the department exists
+            var existingDepartment = _departmentRepository.GetById(department.Id);
+            if (existingDepartment == null)
+            {
+                throw new InvalidOperationException($"Department with ID {department.Id} does not exist.");
+            }
+
+            // Check for duplicate name (only if name is changing)
+            if (!existingDepartment.Name.Equals(department.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                if (_departmentRepository.ExistsByName(department.Name))
+                {
+                    _logger.LogWarning("Attempt to update department with duplicate name: {DepartmentName}", department.Name);
+                    throw new InvalidOperationException($"A department with name '{department.Name}' already exists.");
+                }
+            }
         }
     }
 }

@@ -21,7 +21,7 @@ namespace WebApplicationAPI
 
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 
-            builder.Services.AddTransient<DepartmentsServiceV2>();
+            builder.Services.AddTransient<DepartmentsService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
