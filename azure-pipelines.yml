@@ -32,7 +32,10 @@ steps:
       command: 'build'
       projects: $(Solution)
       arguments: '--configuration $(Configuration)'
-
+  - task: DotNetCoreCLI@2
+    displayName: 'Run tests'
+    inputs:
+      command: 'test'
   - task: DotNetCoreCLI@2
     displayName: 'publish web projects'
     inputs:
