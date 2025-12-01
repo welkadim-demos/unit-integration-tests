@@ -9,6 +9,8 @@ namespace UnitTestSample01.Entities
 {
     public class Department
     {
+       
+
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Department name is required.")]
