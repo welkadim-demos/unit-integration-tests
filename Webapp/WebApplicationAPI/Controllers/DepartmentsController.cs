@@ -31,7 +31,7 @@ namespace WebApplicationAPI.Controllers
         /// <response code="200">Returns the list of departments</response>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<DepartmentDto>), 200)]
-        public ActionResult<IEnumerable<DepartmentDto>> GetAllDepartments()
+        public ActionResult<IEnumerable<DepartmentDto>> getAllDepartments()
         {
             try
             {

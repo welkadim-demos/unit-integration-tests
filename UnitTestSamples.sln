@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36603.0
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11222.15 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestSample01", "UnitTestSample01\UnitTestSample01.csproj", "{E6E54E57-9FDF-4D2D-8CA1-7E9642A46544}"
 EndProject
@@ -14,6 +14,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplicationAPI", "Webapp\WebApplicationAPI\WebApplicationAPI.csproj", "{A87017CA-2503-4841-8597-503D67A3AC28}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplicationAPI.IntegrationTests", "Webapp\WebApplicationAPI.IntegrationTests\WebApplicationAPI.IntegrationTests.csproj", "{74B6CAA1-6483-4119-A030-B6DAF5D5B9F0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F0AFAEFC-7214-46F8-A873-6401EF889226}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

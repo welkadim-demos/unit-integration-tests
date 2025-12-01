@@ -1,0 +1,10 @@
+﻿[*.cs]
+
+# S100: Methods and properties should be named in PascalCase
+dotnet_diagnostic.S100.severity = error
+
+# S1006: Method overrides should not change parameter defaults
+dotnet_diagnostic.S1006.severity = error
+
+# S107: Methods should not have too many parameters
+dotnet_diagnostic.S107.severity = error
