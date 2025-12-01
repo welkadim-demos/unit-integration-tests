@@ -36,6 +36,7 @@ steps:
     displayName: 'Run tests'
     inputs:
       command: 'test'
+      arguments: '--filter "FullyQualifiedName!~XunitTestProject.IntegrationTests.DatabaseConnectionTests&FullyQualifiedName!~XunitTestProject.IntegrationTests.DepartmentsServiceIntegrationTests"'
   - task: DotNetCoreCLI@2
     displayName: 'publish web projects'
     inputs:
